@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personel Formu</title>
+</head>
+<body>
+    <h3>Personel Bilgilerini Getir</h3>
+    <form id="personelForm">
+        <label for="personelID">Personel ID:</label>
+        <input type="text" id="personelID" name="personelID" onchange="fetchData()" />
+        <br/><br/>
+
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad" readonly />
+        <br/><br/>
+
+        <label for="email">E-posta:</label>
+        <input type="text" id="email" name="email" readonly />
+        <br/><br/>
+    </form>
+
+    <script>
+        function fetchData() {
+            var id = document.getElementById("personelID").value; // Personel ID'yi al
+            var url = "https://script.google.com/macros/s/YOUR_SCRIPT_URL?id=" + id; // Google Apps Script URL'si
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert("Personel bulunamadı!");
+                    } else {
+                        document.getElementById("ad").value = data.ad;
+                        document.getElementById("email").value = data.email;
+                    }
+                })
+                .catch(error => {
+                    console.error("Hata:", error);
+                });
+        }
+    </script>
+</body>
+</html>
