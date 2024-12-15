@@ -4,77 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personel Formu</title>
-    <style>
-        /* Genel Ayarlar */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Arial", sans-serif;
-            background-color: transparent;
-        }
-
-        /* Form Ayarları */
-        form {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-            background-color: #ffffff;
-            border: 1px solid #e6e6e6;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h3 {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #2C3345;
-        }
-
-        /* Etiketler */
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #3C4858;
-        }
-
-        /* Input Kutuları */
-        input[type="text"] {
-            width: 100%;
-            height: 42px; /* Yükseklik */
-            padding: 8px 12px;
-            font-size: 16px;
-            color: #333;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease-in-out;
-        }
-
-        input[type="text"]:focus {
-            border-color: #4CAF50; /* JotForm'un yeşil rengi */
-            outline: none;
-            box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
-        }
-    </style>
 </head>
-<body>
-    <form id="personelForm">
-        <h3>Personel Bilgilerini Getir</h3>
-        <label for="personelID">Personel ID:</label>
-        <input type="text" id="personelID" name="personelID" onchange="fetchData()" placeholder="Personel ID girin" />
+<body style="margin: 0; font-family: Arial, sans-serif; background-color: transparent;">
 
-        <label for="ad">Ad:</label>
-        <input type="text" id="ad" name="ad" readonly placeholder="Ad otomatik doldurulacak" />
+    <form id="personelForm" 
+          style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; 
+                 background-color: #ffffff; border: 1px solid #e6e6e6; border-radius: 6px; 
+                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
 
-        <label for="email">E-posta:</label>
-        <input type="text" id="email" name="email" readonly placeholder="E-posta otomatik doldurulacak" />
+        <h3 style="text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 20px; color: #2C3345;">
+            Personel Bilgilerini Getir
+        </h3>
+
+        <label for="personelID" 
+               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
+            Personel ID:
+        </label>
+        <input type="text" id="personelID" name="personelID" onchange="fetchData()" 
+               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
+                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
+               placeholder="Personel ID girin" />
+
+        <label for="ad" 
+               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
+            Ad:
+        </label>
+        <input type="text" id="ad" name="ad" readonly 
+               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
+                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
+               placeholder="Ad otomatik doldurulacak" />
+
+        <label for="email" 
+               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
+            E-posta:
+        </label>
+        <input type="text" id="email" name="email" readonly 
+               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
+                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
+               placeholder="E-posta otomatik doldurulacak" />
     </form>
 
     <script>
@@ -97,5 +64,6 @@
                 });
         }
     </script>
+
 </body>
 </html>
