@@ -9,7 +9,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Arial", sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,42 +24,43 @@
             max-width: 580px; /* iframe genişliğine uyumlu */
             margin: 0 auto; /* Ortalamak için */
             background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
             box-sizing: border-box;
-            padding: 15px;
+            padding: 20px;
         }
 
         h3 {
-            font-size: 16px;
+            font-size: 18px;
             text-align: center;
-            margin: 10px 0 15px 0;
-            color: #333;
-            font-weight: bold;
+            margin: 10px 0 20px 0;
+            color: #2C3345; /* JotForm başlık rengi */
+            font-weight: 600;
         }
 
         /* Etiket Stili */
         label {
             display: block;
-            font-size: 12px;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #3C4858; /* JotForm'un font rengi */
         }
 
         /* Input Kutuları */
         input[type="text"] {
             width: 100%; /* Tam genişlik */
-            padding: 8px;
-            margin-bottom: 12px;
+            padding: 10px;
+            height: 42px; /* JotForm input yüksekliği */
+            margin-bottom: 16px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 14px;
             box-sizing: border-box;
+            color: #333;
         }
 
         input[type="text"]:focus {
-            border-color: #4CAF50;
+            border-color: #4CAF50; /* JotForm'un yeşil vurgu rengi */
             outline: none;
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
