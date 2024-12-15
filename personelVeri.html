@@ -23,17 +23,17 @@
 
     <script>
         function fetchData() {
-            var id = document.getElementById("personelID").value; // Personel ID'yi al
-            var url = "https://script.google.com/macros/s/YOUR_SCRIPT_URL?id=" + id; // Google Apps Script URL'si
+            var id = document.getElementById("personelID").value; // ID alanından veri al
+            var url = "https://script.google.com/macros/s/AKfycbzq-fFbQytIS3Q6bsDgWTRWjQ3rxCCY6KpQPlcUuYlE0BsB27xqXNfYRYenFLURBcYX/exec?id=" + id;
 
             fetch(url)
-                .then(response => response.json())
+                .then(response => response.json()) // JSON formatında yanıt bekleniyor
                 .then(data => {
                     if (data.error) {
                         alert("Personel bulunamadı!");
                     } else {
-                        document.getElementById("ad").value = data.ad;
-                        document.getElementById("email").value = data.email;
+                        document.getElementById("ad").value = data.ad; // Ad alanını doldur
+                        document.getElementById("email").value = data.email; // E-posta alanını doldur
                     }
                 })
                 .catch(error => {
