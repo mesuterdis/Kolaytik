@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personel Formu</title>
     <style>
-        /* Genel Sayfa ve Form Ayarları */
+        /* Sayfa Ayarları */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -13,49 +13,46 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100%;
+            box-sizing: border-box;
             background-color: #f9f9f9;
         }
 
+        /* Form Genişliği ve Yüksekliği Ayarları */
         form {
             width: 100%;
-            max-width: 500px;
-            padding: 20px;
+            max-width: 600px;
+            padding: 10px; /* Padding küçültüldü */
+            background: #fff;
             border: 1px solid #e3e3e3;
             border-radius: 6px;
-            background: #fff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
         }
 
         h3 {
             text-align: center;
-            font-size: 18px;
-            margin-bottom: 20px;
+            font-size: 16px; /* Daha küçük başlık */
+            margin-bottom: 10px;
             color: #333;
         }
 
         label {
-            display: block;
             font-weight: bold;
-            margin-bottom: 8px;
+            display: block;
+            margin-bottom: 3px; /* Daha dar etiket boşluğu */
             color: #555;
+            font-size: 12px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #d4d4d4;
+            padding: 6px; /* Daha dar input kutusu */
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 14px;
-            color: #333;
-        }
-
-        input[type="text"]:focus {
-            border-color: #4CAF50;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-            outline: none;
+            font-size: 12px;
         }
     </style>
 </head>
