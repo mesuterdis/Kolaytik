@@ -5,73 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personel Formu</title>
     <style>
-        /* Sayfa Genel Ayarları */
+        /* Genel Ayarlar */
         body {
             margin: 0;
             padding: 0;
             font-family: "Arial", sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-            background-color: transparent; /* Arkaplanı kaldır */
-            height: 100%;
+            background-color: transparent;
         }
 
-        /* Form Genel Stil Ayarları */
+        /* Form Ayarları */
         form {
             width: 100%;
-            max-width: 600px; /* Form genişliği */
+            max-width: 600px;
             margin: 0 auto;
-            background-color: #ffffff;
-            border-radius: 6px;
-            box-sizing: border-box;
             padding: 20px;
+            box-sizing: border-box;
+            background-color: #ffffff;
             border: 1px solid #e6e6e6;
+            border-radius: 6px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h3 {
-            font-size: 18px;
             text-align: center;
+            font-size: 18px;
+            font-weight: bold;
             margin-bottom: 20px;
             color: #2C3345;
-            font-weight: 600;
         }
 
         /* Etiketler */
         label {
             display: block;
             font-size: 14px;
-            margin-bottom: 10px;
             font-weight: 600;
+            margin-bottom: 10px;
             color: #3C4858;
         }
 
         /* Input Kutuları */
         input[type="text"] {
             width: 100%;
-            padding: 12px; /* İç boşluk */
-            height: 50px; /* Yükseklik */
-            margin-bottom: 20px; /* Kutular arası boşluk */
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px; /* Yazı boyutu */
+            height: 42px; /* Yükseklik */
+            padding: 8px 12px;
+            font-size: 16px;
             color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
             box-sizing: border-box;
+            transition: border-color 0.3s ease-in-out;
         }
 
         input[type="text"]:focus {
-            border-color: #4CAF50; /* JotForm'un yeşil vurgusu */
+            border-color: #4CAF50; /* JotForm'un yeşil rengi */
             outline: none;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+            box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
         }
     </style>
 </head>
 <body>
     <form id="personelForm">
         <h3>Personel Bilgilerini Getir</h3>
-        
         <label for="personelID">Personel ID:</label>
         <input type="text" id="personelID" name="personelID" onchange="fetchData()" placeholder="Personel ID girin" />
 
