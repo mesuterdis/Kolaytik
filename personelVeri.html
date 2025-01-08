@@ -34,60 +34,44 @@
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
                placeholder="Ad otomatik doldurulacak" />
 
-        <!-- Dinamik link: Jotform uygulama linki -->
-        <a id="appLink" 
-           href="https://demo.kolaytik.xyz/app/250075277985973" 
-           style="display: block; text-align: center; margin-top: 20px; font-size: 16px; color: #fff; 
-                  background-color: #007BFF; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-            Jotform Uygulamasına Git
-        </a>
+        <label for="email" 
+               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
+            E-posta:
+        </label>
+        <input type="text" id="email" name="email" readonly 
+               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
+                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
+               placeholder="E-posta otomatik doldurulacak" />
 
         <!-- Dinamik link: Jotform uygulamadaki form linki -->
         <a id="formLink" 
            href="https://demo.kolaytik.xyz/app/250075277985973/243496478149068" 
            style="display: block; text-align: center; margin-top: 20px; font-size: 16px; color: #fff; 
-                  background-color: #28A745; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
+                  background-color: #007BFF; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
             Jotform Formuna Git
         </a>
     </form>
 
     <script>
-        // Jotform uygulama linkine tıklanma olayı
-        document.getElementById("appLink").addEventListener("click", function(event) {
-            event.preventDefault(); // Varsayılan davranışı durdur
-
-            var ad = document.getElementById("ad").value;
-            if (!ad) {
-                alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
-                return;
-            }
-
-            var baseUrl = "https://demo.kolaytik.xyz/app/250075277985973";
-            var dynamicURL = `${baseUrl}?bashekim=${encodeURIComponent(ad)}`;
-
-            // Dinamik linki güncelle ve yönlendir
-            this.href = dynamicURL;
-            this.textContent = dynamicURL;
-            window.location.href = dynamicURL;
-        });
-
         // Jotform uygulamadaki form linkine tıklanma olayı
         document.getElementById("formLink").addEventListener("click", function(event) {
             event.preventDefault(); // Varsayılan davranışı durdur
 
             var ad = document.getElementById("ad").value;
-            if (!ad) {
+            var email = document.getElementById("email").value;
+
+            if (!ad || !email) {
                 alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
                 return;
             }
 
+            // Dinamik URL'yi oluştur
             var baseUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
-            var dynamicURL = `${baseUrl}?bashekim=${encodeURIComponent(ad)}`;
+            var dynamicURL = `${baseUrl}?bashekim=${encodeURIComponent(ad)}&email=${encodeURIComponent(email)}`;
 
             // Dinamik linki güncelle ve yönlendir
-            this.href = dynamicURL;
-            this.textContent = dynamicURL;
-            window.location.href = dynamicURL;
+            this.href = dynamicURL; // Linkin href özelliğini dinamik URL yap
+            window.location.href = dynamicURL; // Kullanıcıyı dinamik URL'ye yönlendir
         });
 
         function fetchData() {
@@ -101,6 +85,7 @@
                         alert("Personel bulunamadı!");
                     } else {
                         document.getElementById("ad").value = data.ad;
+                        document.getElementById("email").value = data.email;
                     }
                 })
                 .catch(error => {
