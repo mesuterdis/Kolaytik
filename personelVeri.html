@@ -71,6 +71,11 @@
             var baseUrl = "https://panel.kolaytik.com/app/250022800689958/243196123883966";
             var dynamicURL = `${baseUrl}?ad=${encodeURIComponent(ad)}&email=${encodeURIComponent(email)}`;
 
+            // Buton metnini güncelle
+            var linkElement = document.getElementById("dynamicLink");
+            linkElement.href = dynamicURL;
+            linkElement.textContent = dynamicURL;
+
             // Kullanıcıyı dinamik URL'ye yönlendir
             window.location.href = dynamicURL;
         });
