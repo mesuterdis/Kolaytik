@@ -43,14 +43,38 @@
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
                placeholder="E-posta otomatik doldurulacak" />
 
+        <!-- Dinamik link -->
         <a id="dynamicLink" 
-           href="#"
+           href="https://panel.kolaytik.com/app/250022800689958/243196123883966" 
            style="display: block; text-align: center; margin-top: 20px; font-size: 16px; color: #fff; 
-                  background-color: #007BFF; padding: 10px 20px; text-decoration: none; border-radius: 4px;"
-           onclick="redirectToDynamicURL()">Dinamik URL'ye Git</a>
+                  background-color: #007BFF; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
+            Dinamik URL'ye Git
+        </a>
     </form>
 
     <script>
+        // Linke tıklanma olayını dinle
+        document.getElementById("dynamicLink").addEventListener("click", function(event) {
+            // Tıklamayı durdur
+            event.preventDefault();
+
+            // Gerekli bilgileri al
+            var ad = document.getElementById("ad").value;
+            var email = document.getElementById("email").value;
+
+            if (!ad || !email) {
+                alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
+                return;
+            }
+
+            // Dinamik URL'yi oluştur
+            var baseUrl = "https://panel.kolaytik.com/app/250022800689958/243196123883966";
+            var dynamicURL = `${baseUrl}?ad=${encodeURIComponent(ad)}&email=${encodeURIComponent(email)}`;
+
+            // Kullanıcıyı dinamik URL'ye yönlendir
+            window.location.href = dynamicURL;
+        });
+
         function fetchData() {
             var id = document.getElementById("personelID").value;
             var url = "https://script.google.com/macros/s/AKfycbzq-fFbQytIS3Q6bsDgWTRWjQ3rxCCY6KpQPlcUuYlE0BsB27xqXNfYRYenFLURBcYX/exec?id=" + id;
@@ -68,22 +92,6 @@
                 .catch(error => {
                     console.error("Hata:", error);
                 });
-        }
-
-        function redirectToDynamicURL() {
-            var ad = document.getElementById("ad").value;
-            var email = document.getElementById("email").value;
-
-            if (!ad || !email) {
-                alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
-                return;
-            }
-
-            var baseUrl = "https://panel.kolaytik.com/app/250022800689958/243196123883966";
-            var dynamicURL = `${baseUrl}?ad=${encodeURIComponent(ad)}&email=${encodeURIComponent(email)}`;
-
-            // Kullanıcıyı dinamik URL'ye yönlendir
-            window.location.href = dynamicURL;
         }
     </script>
 
