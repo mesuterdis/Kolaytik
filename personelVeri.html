@@ -3,110 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personel Formu</title>
+    <title>Personel Verileri</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
-<body style="margin: 0; font-family: Arial, sans-serif; background-color: transparent;">
+<body>
+    <form id="personelForm">
+        <h3>Personel Bilgilerini Getir</h3>
 
-    <form id="personelForm" 
-          style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; box-sizing: border-box; 
-                 background-color: #ffffff; border: 1px solid #e6e6e6; border-radius: 6px; 
-                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+        <label for="personelID">Personel ID:</label>
+        <input type="text" id="personelID" name="personelID" placeholder="ID girin" onchange="fetchData()">
 
-        <h3 style="text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 20px; color: #2C3345;">
-            Personel Bilgilerini Getir
-        </h3>
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad" placeholder="Ad bilgisi" readonly>
 
-        <label for="personelID" 
-               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
-            Personel ID:
-        </label>
-        <input type="text" id="personelID" name="personelID" onchange="fetchData()" 
-               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
-                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
-               placeholder="Personel ID girin" />
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" name="soyad" placeholder="Soyad bilgisi" readonly>
 
-        <label for="ad" 
-               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
-            Ad:
-        </label>
-        <input type="text" id="ad" name="ad" readonly 
-               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
-                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
-               placeholder="Ad otomatik doldurulacak" />
+        <label for="email">E-posta:</label>
+        <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <label for="soyad" 
-               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
-            Soyad:
-        </label>
-        <input type="text" id="soyad" name="soyad" readonly 
-               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
-                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
-               placeholder="Soyad otomatik doldurulacak" />
-
-        <label for="eposta" 
-               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
-            E-posta:
-        </label>
-        <input type="text" id="eposta" name="eposta" readonly 
-               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
-                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
-               placeholder="E-posta otomatik doldurulacak" />
-
-        <!-- Dinamik link: Jotform uygulamadaki form linki -->
-        <a id="formLink" 
-           href="https://demo.kolaytik.xyz/app/250075277985973/243496478149068" 
-           style="display: block; text-align: center; margin-top: 20px; font-size: 16px; color: #fff; 
-                  background-color: #007BFF; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-            Jotform Formuna Git
-        </a>
+        <button type="button" onclick="redirectToJotform()">Jotform Formuna Git</button>
     </form>
 
     <script>
-        // Jotform uygulamadaki form linkine tıklanma olayı
-        document.getElementById("formLink").addEventListener("click", function(event) {
-            event.preventDefault(); // Varsayılan davranışı durdur
+        // Google Apps Script URL
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbyTcCpIIN1y0sWRc0HMI5khaYhJajmmjsjZcf--BJY2_sLQMNCKghDBIwfAvomyBgS9/exec";
+        const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
 
-            var ad = document.getElementById("ad").value;
-            var soyad = document.getElementById("soyad").value;
-            var eposta = document.getElementById("eposta").value;
-
-            // Ad, Soyad ve E-posta alanlarının doldurulup doldurulmadığını kontrol et
-            if (!ad || !soyad || !eposta) {
-                alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
+        function fetchData() {
+            const id = document.getElementById("personelID").value.trim();
+            if (!id) {
+                alert("Lütfen geçerli bir ID girin!");
                 return;
             }
 
-            // Dinamik URL'yi oluştur
-            var baseUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
-            var dynamicURL = `${baseUrl}?isim[first]=${encodeURIComponent(ad)}&isim[last]=${encodeURIComponent(soyad)}&eposta=${encodeURIComponent(eposta)}`;
-
-            // Dinamik linki güncelle ve yönlendir
-            this.href = dynamicURL; // Linkin href özelliğini dinamik URL yap
-            window.location.href = dynamicURL; // Kullanıcıyı dinamik URL'ye yönlendir
-        });
-
-        // Personel bilgilerini almak için fetch işlemi
-        function fetchData() {
-            var id = document.getElementById("personelID").value;
-            var url = "https://script.google.com/macros/s/AKfycbyTcCpIIN1y0sWRc0HMI5khaYhJajmmjsjZcf--BJY2_sLQMNCKghDBIwfAvomyBgS9/exec?id=" + id;
-
-            fetch(url)
+            fetch(`${scriptUrl}?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
-                        alert("Personel bulunamadı!");
+                        alert(data.error);
+                        clearFields();
                     } else {
-                        // Ad, Soyad ve E-posta alanlarını doldur
-                        document.getElementById("ad").value = data.ad;
-                        document.getElementById("soyad").value = data.soyad;
-                        document.getElementById("eposta").value = data.email;
+                        document.getElementById("ad").value = data.ad || "";
+                        document.getElementById("soyad").value = data.soyad || "";
+                        document.getElementById("email").value = data.email || "";
                     }
                 })
                 .catch(error => {
                     console.error("Hata:", error);
+                    alert("Veriler alınırken bir hata oluştu!");
                 });
         }
-    </script>
 
+        function clearFields() {
+            document.getElementById("ad").value = "";
+            document.getElementById("soyad").value = "";
+            document.getElementById("email").value = "";
+        }
+
+        function redirectToJotform() {
+            const ad = encodeURIComponent(document.getElementById("ad").value.trim());
+            const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
+            const email = encodeURIComponent(document.getElementById("email").value.trim());
+
+            if (!ad || !soyad || !email) {
+                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
+                return;
+            }
+
+            const dynamicUrl = `${jotformUrl}?isim=${ad}+${soyad}&eposta=${email}`;
+            window.open(dynamicUrl, "_blank");
+        }
+    </script>
 </body>
 </html>
