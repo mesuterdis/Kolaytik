@@ -27,12 +27,21 @@
 
         <label for="isim" 
                style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
-            İsim (Ad ve Soyad):
+            Ad:
         </label>
         <input type="text" id="isim" name="isim" readonly 
                style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
-               placeholder="Ad ve Soyad otomatik doldurulacak" />
+               placeholder="Ad otomatik doldurulacak" />
+
+        <label for="soyisim" 
+               style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
+            Soyad:
+        </label>
+        <input type="text" id="soyisim" name="soyisim" readonly 
+               style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
+                      border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
+               placeholder="Soyad otomatik doldurulacak" />
 
         <label for="eposta" 
                style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
@@ -58,17 +67,18 @@
             event.preventDefault(); // Varsayılan davranışı durdur
 
             var isim = document.getElementById("isim").value;
+            var soyisim = document.getElementById("soyisim").value;
             var eposta = document.getElementById("eposta").value;
 
-            // İsim ve E-posta alanlarının doldurulup doldurulmadığını kontrol et
-            if (!isim || !eposta) {
+            // İsim, Soyisim ve E-posta alanlarının doldurulup doldurulmadığını kontrol et
+            if (!isim || !soyisim || !eposta) {
                 alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
                 return;
             }
 
             // Dinamik URL'yi oluştur
             var baseUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
-            var dynamicURL = `${baseUrl}?isim=${encodeURIComponent(isim)}&eposta=${encodeURIComponent(eposta)}`;
+            var dynamicURL = `${baseUrl}?isim[first]=${encodeURIComponent(isim)}&isim[last]=${encodeURIComponent(soyisim)}&eposta=${encodeURIComponent(eposta)}`;
 
             // Dinamik linki güncelle ve yönlendir
             this.href = dynamicURL; // Linkin href özelliğini dinamik URL yap
@@ -88,6 +98,7 @@
                     } else {
                         // İsim (Ad Soyad) ve E-posta alanlarını doldur
                         document.getElementById("isim").value = data.isim;
+                        document.getElementById("soyisim").value = data.soyisim;
                         document.getElementById("eposta").value = data.eposta;
                     }
                 })
