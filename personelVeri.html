@@ -25,14 +25,14 @@
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
                placeholder="Personel ID girin" />
 
-        <label for="ad" 
+        <label for="adSoyad" 
                style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
-            Ad:
+            Ad Soyad:
         </label>
-        <input type="text" id="ad" name="ad" readonly 
+        <input type="text" id="adSoyad" name="adSoyad" readonly 
                style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
-               placeholder="Ad otomatik doldurulacak" />
+               placeholder="Ad Soyad otomatik doldurulacak" />
 
         <label for="email" 
                style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
@@ -57,18 +57,18 @@
         document.getElementById("formLink").addEventListener("click", function(event) {
             event.preventDefault(); // Varsayılan davranışı durdur
 
-            var ad = document.getElementById("ad").value;
+            var adSoyad = document.getElementById("adSoyad").value;
             var email = document.getElementById("email").value;
 
-            // Alanların doldurulup doldurulmadığını kontrol et
-            if (!ad || !email) {
+            // Ad Soyad ve Email alanlarının doldurulup doldurulmadığını kontrol et
+            if (!adSoyad || !email) {
                 alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
                 return;
             }
 
             // Dinamik URL'yi oluştur
             var baseUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
-            var dynamicURL = `${baseUrl}?bashekim=${encodeURIComponent(ad)}&email=${encodeURIComponent(email)}`;
+            var dynamicURL = `${baseUrl}?adSoyad=${encodeURIComponent(adSoyad)}&email=${encodeURIComponent(email)}`;
 
             // Dinamik linki güncelle ve yönlendir
             this.href = dynamicURL; // Linkin href özelliğini dinamik URL yap
@@ -86,8 +86,8 @@
                     if (data.error) {
                         alert("Personel bulunamadı!");
                     } else {
-                        // Form alanlarını doldur
-                        document.getElementById("ad").value = data.ad;
+                        // Ad Soyad ve Email alanlarını doldur
+                        document.getElementById("adSoyad").value = data.ad;
                         document.getElementById("email").value = data.email;
                     }
                 })
