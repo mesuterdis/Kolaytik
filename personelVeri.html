@@ -60,6 +60,7 @@
             var ad = document.getElementById("ad").value;
             var email = document.getElementById("email").value;
 
+            // Alanların doldurulup doldurulmadığını kontrol et
             if (!ad || !email) {
                 alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
                 return;
@@ -74,6 +75,7 @@
             window.location.href = dynamicURL; // Kullanıcıyı dinamik URL'ye yönlendir
         });
 
+        // Personel bilgilerini almak için fetch işlemi
         function fetchData() {
             var id = document.getElementById("personelID").value;
             var url = "https://script.google.com/macros/s/AKfycbzq-fFbQytIS3Q6bsDgWTRWjQ3rxCCY6KpQPlcUuYlE0BsB27xqXNfYRYenFLURBcYX/exec?id=" + id;
@@ -84,6 +86,7 @@
                     if (data.error) {
                         alert("Personel bulunamadı!");
                     } else {
+                        // Form alanlarını doldur
                         document.getElementById("ad").value = data.ad;
                         document.getElementById("email").value = data.email;
                     }
