@@ -25,20 +25,20 @@
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
                placeholder="Personel ID girin" />
 
-        <label for="adSoyad" 
+        <label for="isim" 
                style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
-            Ad Soyad:
+            İsim:
         </label>
-        <input type="text" id="adSoyad" name="adSoyad" readonly 
+        <input type="text" id="isim" name="isim" readonly 
                style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
-               placeholder="Ad Soyad otomatik doldurulacak" />
+               placeholder="İsim otomatik doldurulacak" />
 
-        <label for="email" 
+        <label for="eposta" 
                style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #3C4858;">
             E-posta:
         </label>
-        <input type="text" id="email" name="email" readonly 
+        <input type="text" id="eposta" name="eposta" readonly 
                style="width: 100%; height: 42px; padding: 8px 12px; font-size: 16px; color: #333; 
                       border: 1px solid #ccc; border-radius: 4px; margin-bottom: 20px; box-sizing: border-box;" 
                placeholder="E-posta otomatik doldurulacak" />
@@ -57,18 +57,18 @@
         document.getElementById("formLink").addEventListener("click", function(event) {
             event.preventDefault(); // Varsayılan davranışı durdur
 
-            var adSoyad = document.getElementById("adSoyad").value;
-            var email = document.getElementById("email").value;
+            var isim = document.getElementById("isim").value;
+            var eposta = document.getElementById("eposta").value;
 
-            // Ad Soyad ve Email alanlarının doldurulup doldurulmadığını kontrol et
-            if (!adSoyad || !email) {
+            // İsim ve E-posta alanlarının doldurulup doldurulmadığını kontrol et
+            if (!isim || !eposta) {
                 alert("Lütfen önce geçerli bir Personel ID girin ve bilgileri alın.");
                 return;
             }
 
             // Dinamik URL'yi oluştur
             var baseUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
-            var dynamicURL = `${baseUrl}?adSoyad=${encodeURIComponent(adSoyad)}&email=${encodeURIComponent(email)}`;
+            var dynamicURL = `${baseUrl}?isim=${encodeURIComponent(isim)}&eposta=${encodeURIComponent(eposta)}`;
 
             // Dinamik linki güncelle ve yönlendir
             this.href = dynamicURL; // Linkin href özelliğini dinamik URL yap
@@ -86,9 +86,9 @@
                     if (data.error) {
                         alert("Personel bulunamadı!");
                     } else {
-                        // Ad Soyad ve Email alanlarını doldur
-                        document.getElementById("adSoyad").value = data.ad;
-                        document.getElementById("email").value = data.email;
+                        // İsim ve E-posta alanlarını doldur
+                        document.getElementById("isim").value = data.ad;
+                        document.getElementById("eposta").value = data.email;
                     }
                 })
                 .catch(error => {
