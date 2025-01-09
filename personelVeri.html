@@ -16,14 +16,26 @@
             height: 100vh;
         }
 
-        .form-container {
+        form {
             background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+        }
+
+        h3 {
             text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555555;
         }
 
         input[type="text"] {
@@ -35,62 +47,57 @@
             box-sizing: border-box;
         }
 
-        button, a {
-            display: block;
+        button {
             width: 100%;
-            margin-top: 10px;
             padding: 10px;
-            color: white;
             background-color: #007bff;
-            text-decoration: none;
+            color: white;
             border: none;
             border-radius: 4px;
-            font-size: 16px;
             cursor: pointer;
+            font-size: 16px;
         }
 
-        button:hover, a:hover {
+        button:hover {
             background-color: #0056b3;
         }
 
-        p {
+        .error {
+            color: red;
             font-size: 14px;
-            color: #555;
+            margin-top: -10px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-
-    <div class="form-container">
+    <form id="personelForm">
         <h3>Kullanıcı Verileri</h3>
+
         <label for="personelID">Personel ID:</label>
-        <input type="text" id="personelID" placeholder="ID girin" onchange="fetchData()">
+        <input type="text" id="personelID" name="personelID" placeholder="ID girin" onchange="fetchData()">
 
         <label for="ad">Ad:</label>
-        <input type="text" id="ad" placeholder="Ad bilgisi" readonly>
+        <input type="text" id="ad" name="ad" placeholder="Ad bilgisi" readonly>
 
         <label for="soyad">Soyad:</label>
-        <input type="text" id="soyad" placeholder="Soyad bilgisi" readonly>
+        <input type="text" id="soyad" name="soyad" placeholder="Soyad bilgisi" readonly>
 
         <label for="email">E-posta:</label>
-        <input type="text" id="email" placeholder="E-posta bilgisi" readonly>
+        <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <p id="statusMessage"></p>
-        <button onclick="redirectToForm()">Jotform Formuna Git</button>
-    </div>
+        <button type="button" onclick="redirectToJotform()">Jotform Formuna Git</button>
+    </form>
 
     <script>
-        const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
+        // Google Apps Script URL
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbyTcCpIIN1y0sWRc0HMI5khaYhJajmmjsjZcf--BJY2_sLQMNCKghDBIwfAvomyBgS9/exec";
         const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
-
-        let userData = {};
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
-            const statusMessage = document.getElementById("statusMessage");
-
             if (!id) {
-                statusMessage.textContent = "Lütfen geçerli bir ID girin!";
+                alert("Lütfen geçerli bir ID girin!");
                 return;
             }
 
@@ -98,19 +105,17 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
-                        statusMessage.textContent = "Hata: " + data.error;
+                        alert(data.error);
                         clearFields();
                     } else {
                         document.getElementById("ad").value = data.ad || "";
                         document.getElementById("soyad").value = data.soyad || "";
                         document.getElementById("email").value = data.email || "";
-                        statusMessage.textContent = "Bilgiler başarıyla alındı!";
-                        userData = data;
                     }
                 })
                 .catch(error => {
                     console.error("Hata:", error);
-                    statusMessage.textContent = "Veriler alınırken bir hata oluştu!";
+                    alert("Veriler alınırken bir hata oluştu!");
                 });
         }
 
@@ -118,19 +123,21 @@
             document.getElementById("ad").value = "";
             document.getElementById("soyad").value = "";
             document.getElementById("email").value = "";
-            userData = {};
         }
 
-        function redirectToForm() {
-            if (!userData.ad || !userData.soyad || !userData.email) {
-                alert("Lütfen önce kullanıcı bilgilerini doldurun!");
+        function redirectToJotform() {
+            const ad = encodeURIComponent(document.getElementById("ad").value.trim());
+            const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
+            const email = encodeURIComponent(document.getElementById("email").value.trim());
+
+            if (!ad || !soyad || !email) {
+                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
                 return;
             }
 
-            const dynamicUrl = `${jotformUrl}?isim=${encodeURIComponent(userData.ad)}+${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
+            const dynamicUrl = `${jotformUrl}?isim[first]=${ad}&isim[last]=${soyad}&eposta=${email}`;
             window.open(dynamicUrl, "_blank");
         }
     </script>
-
 </body>
 </html>
