@@ -135,8 +135,8 @@
                 return;
             }
 
-            // Ad ve soyadı ayrı parametrelerle gönderiyoruz
-            const dynamicUrl = `${jotformUrl}?ad=${ad}&soyad=${soyad}&eposta=${email}`;
+            // Adı ve soyadı Jotform'a ayrı alanlar olarak gönderiyoruz
+            const dynamicUrl = `${jotformUrl}?isim[first]=${ad}&isim[last]=${soyad}&eposta=${email}`;
             window.open(dynamicUrl, "_blank");
         }
     </script>
