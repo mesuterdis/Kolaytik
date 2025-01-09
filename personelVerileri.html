@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personel Verileri</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <form id="personelForm">
+        <h3>Personel Bilgilerini Getir</h3>
+
+        <label for="personelID">Personel ID:</label>
+        <input type="text" id="personelID" name="personelID" placeholder="ID girin" onchange="fetchData()">
+
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad" placeholder="Ad bilgisi" readonly>
+
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" name="soyad" placeholder="Soyad bilgisi" readonly>
+
+        <label for="email">E-posta:</label>
+        <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
+
+        <button type="button" onclick="redirectToJotformApp()">Jotform Uygulamasına Git</button>
+    </form>
+
+    <script>
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
+        const jotformAppUrl = "https://demo.kolaytik.xyz/app/250075277985973";
+
+        let personelData = null; // Personel bilgilerini saklamak için değişken
+
+        function fetchData() {
+            const id = document.getElementById("personelID").value.trim();
+            if (!id) {
+                alert("Lütfen geçerli bir ID girin!");
+                return;
+            }
+
+            fetch(`${scriptUrl}?id=${id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Ağ yanıtı geçersiz.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        clearFields();
+                    } else {
+                        personelData = data; // Personel verilerini sakla
+                        document.getElementById("ad").value = data.ad.trim();
+                        document.getElementById("soyad").value = data.soyad.trim();
+                        document.getElementById("email").value = data.email.trim();
+                    }
+                })
+                .catch(error => {
+                    console.error("Hata:", error);
+                    alert("Veriler alınırken bir hata oluştu!");
+                });
+        }
+
+        function clearFields() {
+            document.getElementById("ad").value = "";
+            document.getElementById("soyad").value = "";
+            document.getElementById("email").value = "";
+            personelData = null; // Veriyi sıfırla
+        }
+
+        function redirectToJotformApp() {
+            if (!personelData) {
+                alert("Lütfen önce geçerli bir ID girin ve verileri alın!");
+                return;
+            }
+
+            const dynamicParams = new URLSearchParams({
+                "isim[first]": personelData.ad.trim(),
+                "isim[last]": personelData.soyad.trim(),
+                eposta: personelData.email.trim()
+            });
+
+            const dynamicUrl = `${jotformAppUrl}?${dynamicParams.toString()}`;
+            window.open(dynamicUrl, "_blank");
+        }
+    </script>
+</body>
+</html>
