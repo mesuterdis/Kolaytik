@@ -61,6 +61,25 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .form-links {
+            margin-top: 20px;
+        }
+
+        .form-links a {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            background-color: #28a745;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .form-links a:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -79,13 +98,12 @@
         <label for="email">E-posta:</label>
         <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <button type="button" onclick="redirectToJotform()">Jotform Formuna Git</button>
+        <div class="form-links" id="formLinks"></div>
     </form>
 
     <script>
-        // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
+        const jotformAppUrl = "https://demo.kolaytik.xyz/app/250075277985973";
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -102,7 +120,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
@@ -110,6 +127,7 @@
                         document.getElementById("ad").value = data.ad.trim();
                         document.getElementById("soyad").value = data.soyad.trim();
                         document.getElementById("email").value = data.email.trim();
+                        generateFormLinks(data);
                     }
                 })
                 .catch(error => {
@@ -122,20 +140,27 @@
             document.getElementById("ad").value = "";
             document.getElementById("soyad").value = "";
             document.getElementById("email").value = "";
+            document.getElementById("formLinks").innerHTML = "";
         }
 
-        function redirectToJotform() {
-            const ad = encodeURIComponent(document.getElementById("ad").value.trim());
-            const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
-            const email = encodeURIComponent(document.getElementById("email").value.trim());
+        function generateFormLinks(data) {
+            const formLinksDiv = document.getElementById("formLinks");
+            formLinksDiv.innerHTML = ""; // Önceki linkleri temizle
 
-            if (!ad || !soyad || !email) {
-                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
-                return;
-            }
+            // Dinamik olarak form linklerini oluştur
+            const forms = [
+                { id: "243496478149068", name: "Personel Verileri Formu 1" },
+                { id: "243496478149069", name: "Personel Verileri Formu 2" }
+            ];
 
-            const dynamicUrl = `${jotformUrl}?isim[first]=${ad}&isim[last]=${soyad}&eposta=${email}`;
-            window.open(dynamicUrl, "_blank");
+            forms.forEach(form => {
+                const dynamicUrl = `${jotformAppUrl}/${form.id}?isim[first]=${encodeURIComponent(data.ad)}&isim[last]=${encodeURIComponent(data.soyad)}&eposta=${encodeURIComponent(data.email)}`;
+                const link = document.createElement("a");
+                link.href = dynamicUrl;
+                link.target = "_blank";
+                link.innerText = form.name;
+                formLinksDiv.appendChild(link);
+            });
         }
     </script>
 </body>
