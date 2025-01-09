@@ -61,13 +61,6 @@
         button:hover {
             background-color: #0056b3;
         }
-
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-top: -10px;
-            margin-bottom: 15px;
-        }
     </style>
 </head>
 <body>
@@ -92,7 +85,7 @@
     <script>
         // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068"; // Jotform Form URL
+        const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -102,8 +95,14 @@
             }
 
             fetch(`${scriptUrl}?id=${id}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Ağ yanıtı geçersiz.");
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
@@ -135,8 +134,7 @@
                 return;
             }
 
-            // Jotform URL'sine dinamik parametreler ekle
-            const dynamicUrl = `${jotformUrl}?ad=${ad}&soyad=${soyad}&eposta=${email}`;
+            const dynamicUrl = `${jotformUrl}?isim[first]=${ad}&isim[last]=${soyad}&eposta=${email}`;
             window.open(dynamicUrl, "_blank");
         }
     </script>
