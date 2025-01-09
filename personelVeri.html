@@ -3,89 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personel Verileri</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        form {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        h3 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333333;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555555;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Jotform Uygulaması</title>
 </head>
-<body>
+<body style="font-family: Arial, sans-serif;">
+
     <form id="personelForm">
-        <h3>Personel Bilgilerini Getir</h3>
+        <h3>Kullanıcı Bilgilerini Girin</h3>
 
         <label for="personelID">Personel ID:</label>
-        <input type="text" id="personelID" name="personelID" placeholder="ID girin" onchange="fetchData()">
+        <input type="text" id="personelID" name="personelID" onchange="fetchData()">
 
         <label for="ad">Ad:</label>
-        <input type="text" id="ad" name="ad" placeholder="Ad bilgisi" readonly>
+        <input type="text" id="ad" name="ad" readonly>
 
         <label for="soyad">Soyad:</label>
-        <input type="text" id="soyad" name="soyad" placeholder="Soyad bilgisi" readonly>
+        <input type="text" id="soyad" name="soyad" readonly>
 
         <label for="email">E-posta:</label>
-        <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
+        <input type="text" id="email" name="email" readonly>
 
-        <button type="button" onclick="redirectToJotform()">Jotform Formuna Git</button>
+        <button type="button" onclick="openJotformApp()">Jotform Uygulamasına Git</button>
     </form>
 
     <script>
         // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
+        const jotformAppUrl = "https://demo.kolaytik.xyz/app/250075277985973"; // Jotform uygulama linki
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -95,21 +38,15 @@
             }
 
             fetch(`${scriptUrl}?id=${id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Ağ yanıtı geçersiz.");
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
-                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
                     } else {
-                        document.getElementById("ad").value = data.ad.trim();
-                        document.getElementById("soyad").value = data.soyad.trim();
-                        document.getElementById("email").value = data.email.trim();
+                        document.getElementById("ad").value = data.ad || "";
+                        document.getElementById("soyad").value = data.soyad || "";
+                        document.getElementById("email").value = data.email || "";
                     }
                 })
                 .catch(error => {
@@ -124,7 +61,7 @@
             document.getElementById("email").value = "";
         }
 
-        function redirectToJotform() {
+        function openJotformApp() {
             const ad = encodeURIComponent(document.getElementById("ad").value.trim());
             const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
             const email = encodeURIComponent(document.getElementById("email").value.trim());
@@ -134,8 +71,8 @@
                 return;
             }
 
-            const dynamicUrl = `${jotformUrl}?isim[first]=${ad}&isim[last]=${soyad}&eposta=${email}`;
-            window.open(dynamicUrl, "_blank");
+            const dynamicAppUrl = `${jotformAppUrl}?ad=${ad}&soyad=${soyad}&email=${email}`;
+            window.open(dynamicAppUrl, "_blank");
         }
     </script>
 </body>
