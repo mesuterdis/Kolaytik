@@ -11,9 +11,8 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
         }
 
@@ -27,19 +26,36 @@
             text-align: center;
         }
 
-        a {
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button, a {
             display: block;
-            margin: 10px 0;
-            padding: 10px 15px;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
             color: white;
             background-color: #007bff;
             text-decoration: none;
+            border: none;
             border-radius: 4px;
             font-size: 16px;
+            cursor: pointer;
         }
 
-        a:hover {
+        button:hover, a:hover {
             background-color: #0056b3;
+        }
+
+        p {
+            font-size: 14px;
+            color: #555;
         }
     </style>
 </head>
@@ -49,18 +65,26 @@
         <h3>Kullanıcı Verileri</h3>
         <label for="personelID">Personel ID:</label>
         <input type="text" id="personelID" placeholder="ID girin" onchange="fetchData()">
-        <br>
+
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" placeholder="Ad bilgisi" readonly>
+
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" placeholder="Soyad bilgisi" readonly>
+
+        <label for="email">E-posta:</label>
+        <input type="text" id="email" placeholder="E-posta bilgisi" readonly>
+
         <p id="statusMessage"></p>
-        <a href="#" id="form1" class="form-link" onclick="redirectToForm(event, 'form1')">Personel Verileri Formu</a>
+        <button onclick="redirectToForm()">Jotform Formuna Git</button>
     </div>
 
     <script>
-        // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
+        const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
 
         let userData = {};
 
-        // Kullanıcı bilgilerini ID'ye göre al
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
             const statusMessage = document.getElementById("statusMessage");
@@ -75,10 +99,13 @@
                 .then(data => {
                     if (data.error) {
                         statusMessage.textContent = "Hata: " + data.error;
-                        userData = {};
+                        clearFields();
                     } else {
-                        userData = data; // Kullanıcı bilgilerini sakla
+                        document.getElementById("ad").value = data.ad || "";
+                        document.getElementById("soyad").value = data.soyad || "";
+                        document.getElementById("email").value = data.email || "";
                         statusMessage.textContent = "Bilgiler başarıyla alındı!";
+                        userData = data;
                     }
                 })
                 .catch(error => {
@@ -87,18 +114,20 @@
                 });
         }
 
-        // Form linkine tıklama olayını dinle
-        function redirectToForm(event, formId) {
-            event.preventDefault();
+        function clearFields() {
+            document.getElementById("ad").value = "";
+            document.getElementById("soyad").value = "";
+            document.getElementById("email").value = "";
+            userData = {};
+        }
 
+        function redirectToForm() {
             if (!userData.ad || !userData.soyad || !userData.email) {
                 alert("Lütfen önce kullanıcı bilgilerini doldurun!");
                 return;
             }
 
-            const formUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068"; // Örnek form linki
-            const dynamicUrl = `${formUrl}?isim=${encodeURIComponent(userData.ad)}+${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
-
+            const dynamicUrl = `${jotformUrl}?isim=${encodeURIComponent(userData.ad)}+${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
             window.open(dynamicUrl, "_blank");
         }
     </script>
