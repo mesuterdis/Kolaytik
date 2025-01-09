@@ -128,19 +128,19 @@
                 return;
             }
 
-            const ad = encodeURIComponent(personelData.ad.trim());
-            const soyad = encodeURIComponent(personelData.soyad.trim());
-            const email = encodeURIComponent(personelData.email.trim());
+           const ad = encodeURIComponent(document.getElementById("ad").value.trim());
+    const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
+    const email = encodeURIComponent(document.getElementById("email").value.trim());
 
-            if (!ad || !soyad || !email) {
-                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
-                return;
-            }
+    if (!ad || !soyad || !email) {
+        alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
+        return;
+    }
 
-            // Jotform uygulamasına yönlendirme
-            const dynamicUrl = `${jotformAppUrl}?ad=${ad}&soyad=${soyad}&eposta=${email}`;
-            window.open(dynamicUrl, "_blank");
-        }
+    // Güncellenmiş URL parametreleri
+    const dynamicUrl = `${jotformUrl}?ad=${ad}&soyad=${soyad}&eposta=${email}`;
+    window.open(dynamicUrl, "_blank");
+}
     </script>
 </body>
 </html>
