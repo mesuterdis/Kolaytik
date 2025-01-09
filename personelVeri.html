@@ -65,7 +65,7 @@
 </head>
 <body>
     <form id="personelForm">
-        <h3>Kullanıcı Verileri</h3>
+        <h3>Personel Bilgilerini Getir</h3>
 
         <label for="personelID">Personel ID:</label>
         <input type="text" id="personelID" name="personelID" placeholder="ID girin" onchange="fetchData()">
@@ -95,15 +95,21 @@
             }
 
             fetch(`${scriptUrl}?id=${id}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Ağ yanıtı geçersiz.");
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
                     } else {
-                        document.getElementById("ad").value = data.ad || "";
-                        document.getElementById("soyad").value = data.soyad || "";
-                        document.getElementById("email").value = data.email || "";
+                        document.getElementById("ad").value = data.ad.trim();
+                        document.getElementById("soyad").value = data.soyad.trim();
+                        document.getElementById("email").value = data.email.trim();
                     }
                 })
                 .catch(error => {
