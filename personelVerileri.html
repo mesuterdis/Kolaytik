@@ -79,15 +79,12 @@
         <label for="email">E-posta:</label>
         <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <button type="button" onclick="redirectToApp()">Kolaytik Uygulamasına Git</button>
+        <button type="button" onclick="redirectToApp()">Jotform Uygulamasına Git</button>
     </form>
 
     <script>
         // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973"; // Uygulama ana sayfası
-
-        let userData = {}; // Kullanıcı verilerini saklamak için bir değişken
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -109,7 +106,6 @@
                         alert(data.error);
                         clearFields();
                     } else {
-                        userData = data; // Gelen veriyi sakla
                         document.getElementById("ad").value = data.ad.trim();
                         document.getElementById("soyad").value = data.soyad.trim();
                         document.getElementById("email").value = data.email.trim();
@@ -128,14 +124,46 @@
         }
 
         function redirectToApp() {
-            if (!userData.ad || !userData.soyad || !userData.email) {
+            const ad = document.getElementById("ad").value.trim();
+            const soyad = document.getElementById("soyad").value.trim();
+            const email = document.getElementById("email").value.trim();
+
+            if (!ad || !soyad || !email) {
                 alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
                 return;
             }
 
-            // Kullanıcı önce Kolaytik uygulamasına yönlendirilir
-            const appUrl = `${kolaytikAppUrl}?ad=${encodeURIComponent(userData.ad)}&soyad=${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
-            window.open(appUrl, "_blank");
+            // Dinamik bir POST formu oluşturma
+            const form = document.createElement("form");
+            form.method = "POST"; // POST yöntemi
+            form.action = "https://demo.kolaytik.xyz/app/250075277985973"; // App URL
+            form.target = "_blank"; // Yeni sekmede açılması için
+
+            // Ad
+            const adInput = document.createElement("input");
+            adInput.type = "hidden";
+            adInput.name = "ad";
+            adInput.value = ad;
+            form.appendChild(adInput);
+
+            // Soyad
+            const soyadInput = document.createElement("input");
+            soyadInput.type = "hidden";
+            soyadInput.name = "soyad";
+            soyadInput.value = soyad;
+            form.appendChild(soyadInput);
+
+            // E-posta
+            const emailInput = document.createElement("input");
+            emailInput.type = "hidden";
+            emailInput.name = "eposta";
+            emailInput.value = email;
+            form.appendChild(emailInput);
+
+            // Formu body'ye ekleyip gönderiyoruz
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form); // Formu DOM'dan kaldır
         }
     </script>
 </body>
