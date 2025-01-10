@@ -84,6 +84,7 @@
 
     <script>
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
+        const jotformAppUrl = "https://demo.kolaytik.xyz/app/250075277985973";
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -131,11 +132,11 @@
                 return;
             }
 
-            // Dinamik bir POST formu oluşturma
+            // POST yöntemi ile verileri gönder
             const form = document.createElement("form");
-            form.method = "POST"; // POST yöntemi
-            form.action = "https://demo.kolaytik.xyz/app/250075277985973"; // App URL
-            form.target = "_blank"; // Yeni sekmede açılması için
+            form.method = "POST";
+            form.action = jotformAppUrl;
+            form.target = "_blank";
 
             const adInput = document.createElement("input");
             adInput.type = "hidden";
@@ -157,7 +158,7 @@
 
             document.body.appendChild(form);
             form.submit();
-            document.body.removeChild(form); // DOM'dan kaldır
+            document.body.removeChild(form);
         }
     </script>
 </body>
