@@ -133,11 +133,12 @@
                 return;
             }
 
-            const appUrl = `${kolaytikAppUrl}?ad=${ad}&soyad=${soyad}&eposta=${email}`;
-            setTimeout(() => {
-                window.location.href = appUrl;
-            }, 500); // Tarayıcı için bir gecikme ekliyoruz
-        }
+            const appUrl = `${kolaytikAppUrl}?ad=${encodeURIComponent(userData.ad)}&soyad=${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
+    const newWindow = window.open(appUrl, '_blank', 'noopener,noreferrer');
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        alert('Yeni sekme açılamadı! Lütfen tarayıcı ayarlarını kontrol edin.');
+    }
+}
     </script>
 </body>
 </html>
