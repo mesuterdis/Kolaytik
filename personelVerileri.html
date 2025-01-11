@@ -124,42 +124,19 @@
         }
 
         function redirectToApp() {
-            const ad = document.getElementById("ad").value.trim();
-            const soyad = document.getElementById("soyad").value.trim();
-            const email = document.getElementById("email").value.trim();
+            const ad = encodeURIComponent(document.getElementById("ad").value.trim());
+            const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
+            const email = encodeURIComponent(document.getElementById("email").value.trim());
 
             if (!ad || !soyad || !email) {
                 alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
                 return;
             }
 
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = kolaytikAppUrl;
-
-            // Ad
-            const adInput = document.createElement("input");
-            adInput.type = "hidden";
-            adInput.name = "ad";
-            adInput.value = ad;
-            form.appendChild(adInput);
-
-            // Soyad
-            const soyadInput = document.createElement("input");
-            soyadInput.type = "hidden";
-            soyadInput.name = "soyad";
-            soyadInput.value = soyad;
-            form.appendChild(soyadInput);
-
-            // Email
-            const emailInput = document.createElement("input");
-            emailInput.type = "hidden";
-            emailInput.name = "eposta";
-            emailInput.value = email;
-            form.appendChild(emailInput);
-
-            document.body.appendChild(form);
-            form.submit();
+            const appUrl = `${kolaytikAppUrl}?ad=${ad}&soyad=${soyad}&eposta=${email}`;
+            setTimeout(() => {
+                window.location.href = appUrl;
+            }, 500); // Tarayıcı için bir gecikme ekliyoruz
         }
     </script>
 </body>
