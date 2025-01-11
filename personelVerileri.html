@@ -128,10 +128,56 @@
         }
 
         function redirectToApp() {
-            if (!userData.ad || !userData.soyad || !userData.email) {
-                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
-                return;
-            }
+    const appUrl = `${kolaytikAppUrl}`; // Sadece app URL'si, parametre olmadan
+
+    // Kullanıcı bilgilerini kontrol edin
+    if (!userData || !userData.ad || !userData.soyad || !userData.email) {
+        alert("Kullanıcı bilgileri eksik!");
+        return;
+    }
+
+    // URL'yi kontrol edin
+    if (!appUrl.startsWith('https://')) {
+        alert("Geçersiz URL: " + appUrl);
+        return;
+    }
+
+    // Form oluşturma
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = appUrl;
+    form.target = '_blank';
+
+    // Ad alanı
+    const adInput = document.createElement('input');
+    adInput.type = 'hidden';
+    adInput.name = 'ad';
+    adInput.value = userData.ad;
+    form.appendChild(adInput);
+
+    // Soyad alanı
+    const soyadInput = document.createElement('input');
+    soyadInput.type = 'hidden';
+    soyadInput.name = 'soyad';
+    soyadInput.value = userData.soyad;
+    form.appendChild(soyadInput);
+
+    // E-posta alanı
+    const emailInput = document.createElement('input');
+    emailInput.type = 'hidden';
+    emailInput.name = 'eposta';
+    emailInput.value = userData.email;
+    form.appendChild(emailInput);
+
+    // Formu geçici olarak body'ye ekle ve gönder
+    try {
+        document.body.appendChild(form);
+        form.submit();
+    } finally {
+        document.body.removeChild(form);
+    }
+}
+
 
             // Kullanıcı önce Kolaytik uygulamasına yönlendirilir
             const appUrl = `${kolaytikAppUrl}?ad=${encodeURIComponent(userData.ad)}&soyad=${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
