@@ -79,7 +79,7 @@
         <label for="email">E-posta:</label>
         <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <button type="button" onclick="redirectToKolaytikApp()">Jotform Uygulamasına Git</button>
+        <button type="button" onclick="redirectToApp()">Jotform Uygulamasına Git</button>
     </form>
 
     <script>
@@ -101,7 +101,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Gelen Veri:", data);
+                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
@@ -123,43 +123,43 @@
             document.getElementById("email").value = "";
         }
 
-        function redirectToKolaytikApp() {
+        function redirectToApp() {
             const ad = document.getElementById("ad").value.trim();
             const soyad = document.getElementById("soyad").value.trim();
             const email = document.getElementById("email").value.trim();
 
             if (!ad || !soyad || !email) {
-                alert("Lütfen geçerli bir kullanıcı bilgisi alın!");
+                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
                 return;
             }
 
             const form = document.createElement("form");
             form.method = "POST";
             form.action = kolaytikAppUrl;
-            form.target = "_blank";
 
+            // Ad
             const adInput = document.createElement("input");
             adInput.type = "hidden";
             adInput.name = "ad";
             adInput.value = ad;
+            form.appendChild(adInput);
 
+            // Soyad
             const soyadInput = document.createElement("input");
             soyadInput.type = "hidden";
             soyadInput.name = "soyad";
             soyadInput.value = soyad;
+            form.appendChild(soyadInput);
 
+            // Email
             const emailInput = document.createElement("input");
             emailInput.type = "hidden";
             emailInput.name = "eposta";
             emailInput.value = email;
-
-            form.appendChild(adInput);
-            form.appendChild(soyadInput);
             form.appendChild(emailInput);
 
             document.body.appendChild(form);
             form.submit();
-            document.body.removeChild(form);
         }
     </script>
 </body>
