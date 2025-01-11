@@ -61,6 +61,10 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        iframe {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -82,9 +86,12 @@
         <button type="button" onclick="redirectToApp()">Kolaytik Uygulamasına Git</button>
     </form>
 
+    <iframe id="appFrame" name="appFrame"></iframe>
+
     <script>
+        // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973";
+        const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973"; // Uygulama ana sayfası
 
         let userData = {}; // Kullanıcı verilerini saklamak için bir değişken
 
@@ -103,6 +110,7 @@
                     return response.json();
                 })
                 .then(data => {
+                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
@@ -126,8 +134,10 @@
         }
 
         function redirectToApp() {
+            const appUrl = `${kolaytikAppUrl}`; // Sadece app URL'si, parametre olmadan
+
             // Kullanıcı bilgilerini kontrol edin
-            if (!userData || !userData.ad || !userData.soyad || !userData.email) {
+            if (!userData.ad || !userData.soyad || !userData.email) {
                 alert("Kullanıcı bilgileri eksik!");
                 return;
             }
@@ -135,8 +145,8 @@
             // Form oluşturma
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = kolaytikAppUrl;
-            form.target = '_blank';
+            form.action = appUrl;
+            form.target = 'appFrame';
 
             // Ad alanı
             const adInput = document.createElement('input');
@@ -160,9 +170,12 @@
             form.appendChild(emailInput);
 
             // Formu geçici olarak body'ye ekle ve gönder
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
+            try {
+                document.body.appendChild(form);
+                form.submit();
+            } finally {
+                document.body.removeChild(form);
+            }
         }
     </script>
 </body>
