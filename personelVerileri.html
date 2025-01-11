@@ -15,7 +15,6 @@
             align-items: center;
             height: 100vh;
         }
-
         form {
             background-color: #ffffff;
             padding: 20px;
@@ -24,20 +23,17 @@
             width: 100%;
             max-width: 400px;
         }
-
         h3 {
             text-align: center;
             margin-bottom: 20px;
             color: #333333;
         }
-
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
             color: #555555;
         }
-
         input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -46,7 +42,6 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
         button {
             width: 100%;
             padding: 10px;
@@ -57,43 +52,30 @@
             cursor: pointer;
             font-size: 16px;
         }
-
         button:hover {
             background-color: #0056b3;
-        }
-
-        iframe {
-            display: none; /* Kullanıcıya iframe'in görünmemesi için */
         }
     </style>
 </head>
 <body>
     <form id="personelForm">
         <h3>Personel Bilgilerini Getir</h3>
-
         <label for="personelID">Personel ID:</label>
         <input type="text" id="personelID" name="personelID" placeholder="ID girin" onchange="fetchData()">
-
         <label for="ad">Ad:</label>
         <input type="text" id="ad" name="ad" placeholder="Ad bilgisi" readonly>
-
         <label for="soyad">Soyad:</label>
         <input type="text" id="soyad" name="soyad" placeholder="Soyad bilgisi" readonly>
-
         <label for="email">E-posta:</label>
         <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
-
         <button type="button" onclick="redirectToApp()">Kolaytik Uygulamasına Git</button>
     </form>
 
-    <iframe id="hiddenFrame" name="hiddenFrame"></iframe>
-
     <script>
-        // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973"; // Uygulama ana sayfası
+        const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973";
 
-        let userData = {}; // Kullanıcı verilerini saklamak için bir değişken
+        let userData = {};
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -103,21 +85,16 @@
             }
 
             fetch(`${scriptUrl}?id=${id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Ağ yanıtı geçersiz.");
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         alert(data.error);
                         clearFields();
                     } else {
-                        userData = data; // Gelen veriyi sakla
-                        document.getElementById("ad").value = data.ad.trim();
-                        document.getElementById("soyad").value = data.soyad.trim();
-                        document.getElementById("email").value = data.email.trim();
+                        userData = data;
+                        document.getElementById("ad").value = data.ad;
+                        document.getElementById("soyad").value = data.soyad;
+                        document.getElementById("email").value = data.email;
                     }
                 })
                 .catch(error => {
@@ -133,35 +110,32 @@
         }
 
         function redirectToApp() {
-            if (!userData || !userData.ad || !userData.soyad || !userData.email) {
+            if (!userData.ad || !userData.soyad || !userData.email) {
                 alert("Kullanıcı bilgileri eksik!");
                 return;
             }
 
-            // Form oluşturma ve gönderme
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = kolaytikAppUrl;
-            form.target = 'hiddenFrame';
+            const appUrl = `${kolaytikAppUrl}`;
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = appUrl;
+            form.target = "_blank";
 
-            // Ad alanı
-            const adInput = document.createElement('input');
-            adInput.type = 'hidden';
-            adInput.name = 'ad';
+            const adInput = document.createElement("input");
+            adInput.type = "hidden";
+            adInput.name = "ad";
             adInput.value = userData.ad;
             form.appendChild(adInput);
 
-            // Soyad alanı
-            const soyadInput = document.createElement('input');
-            soyadInput.type = 'hidden';
-            soyadInput.name = 'soyad';
+            const soyadInput = document.createElement("input");
+            soyadInput.type = "hidden";
+            soyadInput.name = "soyad";
             soyadInput.value = userData.soyad;
             form.appendChild(soyadInput);
 
-            // E-posta alanı
-            const emailInput = document.createElement('input');
-            emailInput.type = 'hidden';
-            emailInput.name = 'eposta';
+            const emailInput = document.createElement("input");
+            emailInput.type = "hidden";
+            emailInput.name = "eposta";
             emailInput.value = userData.email;
             form.appendChild(emailInput);
 
