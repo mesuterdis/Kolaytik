@@ -124,8 +124,21 @@
         }
 
         function redirectToApp() {
-            cfunction redirectToApp() {
     const appUrl = `${kolaytikAppUrl}`; // Sadece app URL'si, parametre olmadan
+
+    // Kullanıcı bilgilerini kontrol edin
+    if (!userData || !userData.ad || !userData.soyad || !userData.email) {
+        alert("Kullanıcı bilgileri eksik!");
+        return;
+    }
+
+    // URL'yi kontrol edin
+    if (!appUrl.startsWith('https://')) {
+        alert("Geçersiz URL: " + appUrl);
+        return;
+    }
+
+    // Form oluşturma
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = appUrl;
@@ -153,12 +166,14 @@
     form.appendChild(emailInput);
 
     // Formu geçici olarak body'ye ekle ve gönder
-    document.body.appendChild(form);
-    form.submit();
-
-    // Formu gönderdikten sonra DOM'dan kaldır
-    document.body.removeChild(form);
+    try {
+        document.body.appendChild(form);
+        form.submit();
+    } finally {
+        document.body.removeChild(form);
+    }
 }
+
 
 
             const appUrl = `${kolaytikAppUrl}?ad=${encodeURIComponent(userData.ad)}&soyad=${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
