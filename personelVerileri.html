@@ -79,13 +79,15 @@
         <label for="email">E-posta:</label>
         <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <button type="button" onclick="redirectToJotform()">Kolaytik Formuna Git</button>
+        <button type="button" onclick="redirectToApp()">Kolaytik Uygulamasına Git</button>
     </form>
 
     <script>
         // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const jotformUrl = "https://demo.kolaytik.xyz/app/250075277985973/243496478149068";
+        const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973"; // Uygulama ana sayfası
+
+        let userData = {}; // Kullanıcı verilerini saklamak için bir değişken
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -107,6 +109,7 @@
                         alert(data.error);
                         clearFields();
                     } else {
+                        userData = data; // Gelen veriyi sakla
                         document.getElementById("ad").value = data.ad.trim();
                         document.getElementById("soyad").value = data.soyad.trim();
                         document.getElementById("email").value = data.email.trim();
@@ -124,18 +127,15 @@
             document.getElementById("email").value = "";
         }
 
-        function redirectToJotform() {
-            const ad = encodeURIComponent(document.getElementById("ad").value.trim());
-            const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
-            const email = encodeURIComponent(document.getElementById("email").value.trim());
-
-            if (!ad || !soyad || !email) {
+        function redirectToApp() {
+            if (!userData.ad || !userData.soyad || !userData.email) {
                 alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
                 return;
             }
 
-            const dynamicUrl = `${jotformUrl}?isim[first]=${ad}&isim[last]=${soyad}&eposta=${email}`;
-            window.open(dynamicUrl, "_blank");
+            // Kullanıcı önce Kolaytik uygulamasına yönlendirilir
+            const appUrl = `${kolaytikAppUrl}?ad=${encodeURIComponent(userData.ad)}&soyad=${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
+            window.open(appUrl, "_blank");
         }
     </script>
 </body>
