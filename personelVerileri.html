@@ -63,7 +63,7 @@
         }
 
         iframe {
-            display: none;
+            display: none; /* Kullanıcıya iframe'in görünmemesi için */
         }
     </style>
 </head>
@@ -86,7 +86,7 @@
         <button type="button" onclick="redirectToApp()">Kolaytik Uygulamasına Git</button>
     </form>
 
-    <iframe id="appFrame" name="appFrame"></iframe>
+    <iframe id="hiddenFrame" name="hiddenFrame"></iframe>
 
     <script>
         // Google Apps Script URL
@@ -110,7 +110,6 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
@@ -134,19 +133,16 @@
         }
 
         function redirectToApp() {
-            const appUrl = `${kolaytikAppUrl}`; // Sadece app URL'si, parametre olmadan
-
-            // Kullanıcı bilgilerini kontrol edin
-            if (!userData.ad || !userData.soyad || !userData.email) {
+            if (!userData || !userData.ad || !userData.soyad || !userData.email) {
                 alert("Kullanıcı bilgileri eksik!");
                 return;
             }
 
-            // Form oluşturma
+            // Form oluşturma ve gönderme
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = appUrl;
-            form.target = 'appFrame';
+            form.action = kolaytikAppUrl;
+            form.target = 'hiddenFrame';
 
             // Ad alanı
             const adInput = document.createElement('input');
@@ -169,13 +165,9 @@
             emailInput.value = userData.email;
             form.appendChild(emailInput);
 
-            // Formu geçici olarak body'ye ekle ve gönder
-            try {
-                document.body.appendChild(form);
-                form.submit();
-            } finally {
-                document.body.removeChild(form);
-            }
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
         }
     </script>
 </body>
