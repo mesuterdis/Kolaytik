@@ -79,7 +79,7 @@
         <label for="email">E-posta:</label>
         <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <button type="button" onclick="redirectToKolaytik()">Jotform Uygulamasına Git</button>
+        <button type="button" onclick="redirectToKolaytikApp()">Jotform Uygulamasına Git</button>
     </form>
 
     <script>
@@ -94,8 +94,14 @@
             }
 
             fetch(`${scriptUrl}?id=${id}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Ağ yanıtı geçersiz.");
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log("Gelen Veri:", data);
                     if (data.error) {
                         alert(data.error);
                         clearFields();
@@ -117,21 +123,20 @@
             document.getElementById("email").value = "";
         }
 
-        function redirectToKolaytik() {
-            const ad = encodeURIComponent(document.getElementById("ad").value.trim());
-            const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
-            const email = encodeURIComponent(document.getElementById("email").value.trim());
+        function redirectToKolaytikApp() {
+            const ad = document.getElementById("ad").value.trim();
+            const soyad = document.getElementById("soyad").value.trim();
+            const email = document.getElementById("email").value.trim();
 
             if (!ad || !soyad || !email) {
-                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
+                alert("Lütfen geçerli bir kullanıcı bilgisi alın!");
                 return;
             }
 
-            // POST ile veri gönder ve ardından yönlendir
             const form = document.createElement("form");
             form.method = "POST";
             form.action = kolaytikAppUrl;
-            form.target = "_blank"; // Yeni sekmede aç
+            form.target = "_blank";
 
             const adInput = document.createElement("input");
             adInput.type = "hidden";
