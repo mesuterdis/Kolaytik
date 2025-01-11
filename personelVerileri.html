@@ -79,12 +79,12 @@
         <label for="email">E-posta:</label>
         <input type="text" id="email" name="email" placeholder="E-posta bilgisi" readonly>
 
-        <button type="button" onclick="redirectToApp()">Jotform Uygulamasına Git</button>
+        <button type="button" onclick="redirectToKolaytik()">Jotform Uygulamasına Git</button>
     </form>
 
     <script>
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
-        const jotformAppUrl = "https://demo.kolaytik.xyz/app/250075277985973";
+        const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973";
 
         function fetchData() {
             const id = document.getElementById("personelID").value.trim();
@@ -94,12 +94,7 @@
             }
 
             fetch(`${scriptUrl}?id=${id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Ağ yanıtı geçersiz.");
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         alert(data.error);
@@ -122,38 +117,39 @@
             document.getElementById("email").value = "";
         }
 
-        function redirectToApp() {
-            const ad = document.getElementById("ad").value.trim();
-            const soyad = document.getElementById("soyad").value.trim();
-            const email = document.getElementById("email").value.trim();
+        function redirectToKolaytik() {
+            const ad = encodeURIComponent(document.getElementById("ad").value.trim());
+            const soyad = encodeURIComponent(document.getElementById("soyad").value.trim());
+            const email = encodeURIComponent(document.getElementById("email").value.trim());
 
             if (!ad || !soyad || !email) {
                 alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
                 return;
             }
 
-            // POST yöntemi ile verileri gönder
+            // POST ile veri gönder ve ardından yönlendir
             const form = document.createElement("form");
             form.method = "POST";
-            form.action = jotformAppUrl;
-            form.target = "_blank";
+            form.action = kolaytikAppUrl;
+            form.target = "_blank"; // Yeni sekmede aç
 
             const adInput = document.createElement("input");
             adInput.type = "hidden";
             adInput.name = "ad";
             adInput.value = ad;
-            form.appendChild(adInput);
 
             const soyadInput = document.createElement("input");
             soyadInput.type = "hidden";
             soyadInput.name = "soyad";
             soyadInput.value = soyad;
-            form.appendChild(soyadInput);
 
             const emailInput = document.createElement("input");
             emailInput.type = "hidden";
             emailInput.name = "eposta";
             emailInput.value = email;
+
+            form.appendChild(adInput);
+            form.appendChild(soyadInput);
             form.appendChild(emailInput);
 
             document.body.appendChild(form);
