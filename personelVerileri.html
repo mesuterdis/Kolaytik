@@ -83,7 +83,6 @@
     </form>
 
     <script>
-        // Google Apps Script URL
         const scriptUrl = "https://script.google.com/macros/s/AKfycbx6pRbLV8RgikeX88ZxeuFmF8n-wUogaorZ0MzB-cFxfAvXKyYH4IVdMrlcrWSRIE6b/exec";
         const kolaytikAppUrl = "https://demo.kolaytik.xyz/app/250075277985973"; // Uygulama ana sayfası
 
@@ -97,22 +96,16 @@
             }
 
             fetch(`${scriptUrl}?id=${id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Ağ yanıtı geçersiz.");
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
-                    console.log("Gelen Veri:", data); // Debug için log ekledik.
                     if (data.error) {
                         alert(data.error);
                         clearFields();
                     } else {
-                        userData = data; // Gelen veriyi sakla
-                        document.getElementById("ad").value = data.ad.trim();
-                        document.getElementById("soyad").value = data.soyad.trim();
-                        document.getElementById("email").value = data.email.trim();
+                        userData = data;
+                        document.getElementById("ad").value = data.ad;
+                        document.getElementById("soyad").value = data.soyad;
+                        document.getElementById("email").value = data.email;
                     }
                 })
                 .catch(error => {
@@ -129,13 +122,37 @@
 
         function redirectToApp() {
             if (!userData.ad || !userData.soyad || !userData.email) {
-                alert("Form verileri eksik! Lütfen önce verileri kontrol edin.");
+                alert("Kullanıcı bilgileri eksik!");
                 return;
             }
 
-            // Kullanıcı önce Kolaytik uygulamasına yönlendirilir
-            const appUrl = `${kolaytikAppUrl}?ad=${encodeURIComponent(userData.ad)}&soyad=${encodeURIComponent(userData.soyad)}&eposta=${encodeURIComponent(userData.email)}`;
-            window.open(appUrl, "_blank");
+            const appUrl = `${kolaytikAppUrl}`;
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = appUrl;
+            form.target = "_blank";
+
+            const adInput = document.createElement("input");
+            adInput.type = "hidden";
+            adInput.name = "ad";
+            adInput.value = userData.ad;
+            form.appendChild(adInput);
+
+            const soyadInput = document.createElement("input");
+            soyadInput.type = "hidden";
+            soyadInput.name = "soyad";
+            soyadInput.value = userData.soyad;
+            form.appendChild(soyadInput);
+
+            const emailInput = document.createElement("input");
+            emailInput.type = "hidden";
+            emailInput.name = "eposta";
+            emailInput.value = userData.email;
+            form.appendChild(emailInput);
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
         }
     </script>
 </body>
